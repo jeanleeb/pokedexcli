@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/jeanleeb/pokedexcli/internal/pokeapi"
 )
 
 const LIMIT = 20
-const LOCATION_AREAS_URL = "https://pokeapi.co/api/v2/location-area"
 
 type LocationAreasResponse struct {
 	Count    int    `json:"count"`
@@ -17,12 +18,12 @@ type LocationAreasResponse struct {
 	} `json:"results"`
 }
 
-func commandMap(cfg *Config) error {
+func commandMap(cfg *Config, arg string) error {
 	var url string
 	if cfg.Next != "" {
 		url = cfg.Next
 	} else {
-		url = fmt.Sprintf("%s?limit=%d", LOCATION_AREAS_URL, LIMIT)
+		url = fmt.Sprintf("%s?limit=%d", pokeapi.LOCATION_AREAS_URL, LIMIT)
 	}
 
 	locationAreas, err := cfg.ApiClient.GetLocationAreas(url)
@@ -40,7 +41,7 @@ func commandMap(cfg *Config) error {
 	return nil
 }
 
-func commandMapb(cfg *Config) error {
+func commandMapb(cfg *Config, arg string) error {
 	if cfg.Previous == "" {
 		fmt.Println("you're on the first page")
 		return nil
