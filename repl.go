@@ -15,6 +15,7 @@ func startRepl() {
 		Next:      "",
 		Previous:  "",
 		ApiClient: apiClient,
+		Pokedex:   map[string]Pokemon{},
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -47,17 +48,22 @@ func startRepl() {
 
 func cleanInput(text string) []string {
 	clean := []string{}
-	for _, word := range strings.Fields(strings.ToLower(text)) {
+	for word := range strings.FieldsSeq(strings.ToLower(text)) {
 		clean = append(clean, word)
 	}
 
 	return clean
 }
 
+type Pokemon struct {
+	Name string
+}
+
 type Config struct {
 	Next      string
 	Previous  string
 	ApiClient pokeapi.Client
+	Pokedex   map[string]Pokemon
 }
 
 type cliCommand struct {
@@ -92,6 +98,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "List all Pokémon in an area. Usage: explore <area name>",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Catch a Pokemon. Usage: catch <pokemon name>",
+			callback:    commandCatch,
 		},
 	}
 }
