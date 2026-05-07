@@ -5,10 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/jeanleeb/pokedexcli/internal/pokeapi"
 )
 
 func startRepl() {
-	cfg := &Config{}
+	apiClient := pokeapi.NewClient()
+	cfg := &Config{
+		Next:      "",
+		Previous:  "",
+		ApiClient: apiClient,
+	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
@@ -43,8 +50,9 @@ func cleanInput(text string) []string {
 }
 
 type Config struct {
-	Next     string
-	Previous string
+	Next      string
+	Previous  string
+	ApiClient pokeapi.Client
 }
 
 type cliCommand struct {

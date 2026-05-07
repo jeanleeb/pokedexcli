@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/jeanleeb/pokedexcli/internal/pokeapi"
 )
 
 const LIMIT = 20
@@ -27,7 +25,7 @@ func commandMap(cfg *Config) error {
 		url = fmt.Sprintf("%s?limit=%d", LOCATION_AREAS_URL, LIMIT)
 	}
 
-	locationAreas, err := pokeapi.GetLocationAreas(url)
+	locationAreas, err := cfg.ApiClient.GetLocationAreas(url)
 	if err != nil {
 		return err
 	}
@@ -48,7 +46,7 @@ func commandMapb(cfg *Config) error {
 		return nil
 	}
 
-	locationAreas, err := pokeapi.GetLocationAreas(cfg.Previous)
+	locationAreas, err := cfg.ApiClient.GetLocationAreas(cfg.Previous)
 	if err != nil {
 		return err
 	}
