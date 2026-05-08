@@ -15,11 +15,12 @@ func startRepl() {
 		Next:      "",
 		Previous:  "",
 		ApiClient: apiClient,
+		Pokedex:   map[string]pokeapi.PokemonResponse{},
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("Pokedex > ")
 		scanner.Scan()
 
 		words := cleanInput(scanner.Text())
@@ -30,7 +31,7 @@ func startRepl() {
 		commandName := words[0]
 		command, exists := getCommands()[commandName]
 		if !exists {
-			fmt.Printf("Unknown command")
+			fmt.Println("Unknown command")
 			continue
 		}
 
@@ -47,7 +48,7 @@ func startRepl() {
 
 func cleanInput(text string) []string {
 	clean := []string{}
-	for _, word := range strings.Fields(strings.ToLower(text)) {
+	for word := range strings.FieldsSeq(strings.ToLower(text)) {
 		clean = append(clean, word)
 	}
 
@@ -58,6 +59,7 @@ type Config struct {
 	Next      string
 	Previous  string
 	ApiClient pokeapi.Client
+	Pokedex   map[string]pokeapi.PokemonResponse
 }
 
 type cliCommand struct {
@@ -92,6 +94,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "List all Pokémon in an area. Usage: explore <area name>",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Catch a Pokemon. Usage: catch <pokemon name>",
+			callback:    commandCatch,
 		},
 	}
 }

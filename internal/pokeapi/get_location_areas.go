@@ -31,6 +31,9 @@ func (c *Client) GetLocationAreas(url string) (LocationAreasResponse, error) {
 	if err != nil {
 		return LocationAreasResponse{}, fmt.Errorf("error fetching map locations: %w", err)
 	}
+	if res.StatusCode != http.StatusOK {
+		return LocationAreasResponse{}, fmt.Errorf("unexpected response status code: %d", res.StatusCode)
+	}
 	defer res.Body.Close()
 
 	dat, err := io.ReadAll(res.Body)
