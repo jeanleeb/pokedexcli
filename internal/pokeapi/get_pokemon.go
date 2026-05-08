@@ -333,10 +333,15 @@ func (c *Client) GetPokemon(name string) (PokemonResponse, error) {
 	if err != nil {
 		return PokemonResponse{}, fmt.Errorf("error fetching Pokemon data: %w", err)
 	}
+	if res.StatusCode == http.StatusNotFound {
+		return PokemonResponse{}, fmt.Errorf("%s not found", name)
+	}
+	if res.StatusCode != http.StatusOK {
+		return PokemonResponse{}, fmt.Errorf("unexpected response status code: %d", res.StatusCode)
+	}
 	defer res.Body.Close()
 
 	dat, err := io.ReadAll(res.Body)
-
 	var pokemonRes PokemonResponse
 	if err := json.Unmarshal(dat, &pokemonRes); err != nil {
 		return PokemonResponse{}, fmt.Errorf("error parsing response: %w", err)

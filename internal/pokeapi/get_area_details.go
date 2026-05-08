@@ -79,6 +79,12 @@ func (c *Client) GetAreaDetails(area string) (AreaResponse, error) {
 	if err != nil {
 		return AreaResponse{}, fmt.Errorf("error fetching area details: %w", err)
 	}
+	if res.StatusCode == http.StatusNotFound {
+		return AreaResponse{}, fmt.Errorf("%s not found", area)
+	}
+	if res.StatusCode != http.StatusOK {
+		return AreaResponse{}, fmt.Errorf("unexpected response status code: %d", res.StatusCode)
+	}
 	defer res.Body.Close()
 
 	dat, err := io.ReadAll(res.Body)
