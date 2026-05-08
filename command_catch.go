@@ -32,6 +32,8 @@ func commandCatch(cfg *Config, arg string) error {
 			cfg.Pokedex[pokemon.Name] = pokemon
 		}
 
+		fmt.Println("You may now inspect it with the inspect command.")
+
 		return nil
 	}
 
