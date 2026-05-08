@@ -15,12 +15,12 @@ func startRepl() {
 		Next:      "",
 		Previous:  "",
 		ApiClient: apiClient,
-		Pokedex:   map[string]Pokemon{},
+		Pokedex:   map[string]pokeapi.PokemonResponse{},
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("Pokedex > ")
 		scanner.Scan()
 
 		words := cleanInput(scanner.Text())
@@ -31,7 +31,7 @@ func startRepl() {
 		commandName := words[0]
 		command, exists := getCommands()[commandName]
 		if !exists {
-			fmt.Printf("Unknown command")
+			fmt.Println("Unknown command")
 			continue
 		}
 
@@ -55,15 +55,11 @@ func cleanInput(text string) []string {
 	return clean
 }
 
-type Pokemon struct {
-	Name string
-}
-
 type Config struct {
 	Next      string
 	Previous  string
 	ApiClient pokeapi.Client
-	Pokedex   map[string]Pokemon
+	Pokedex   map[string]pokeapi.PokemonResponse
 }
 
 type cliCommand struct {
