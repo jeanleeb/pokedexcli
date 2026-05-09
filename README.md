@@ -2,6 +2,8 @@
 
 A simple interactive Pokedex command-line tool written in Go, built as part of [boot.dev](https://boot.dev)'s "Build a Pokedex in Go" project. It uses the [PokeAPI](https://pokeapi.co/) to fetch real Pokemon data.
 
+The main repository is on codeberg: [https://codeberg.org/jeanleeb/pokedexcli](https://codeberg.org/jeanleeb/pokedexcli). Github repository is a mirror.
+
 ## Features
 
 - Browse Pokemon location areas (`map`, `mapb`)
